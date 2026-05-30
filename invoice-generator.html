@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Invoice Generator - Create & Download PDF | FreeTools</title>
+    <meta name="description" content="Create professional invoices for free. No signup required. Add your logo, customize fields, export as PDF. Perfect for freelancers and small businesses.">
+    <meta property="og:title" content="Free Invoice Generator - Create & Download PDF">
+    <meta property="og:description" content="Create professional invoices for free. Export as PDF. No signup.">
+    <link rel="canonical" href="https://tyr1105.github.io/freetools/invoice-generator.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>tailwind.config={theme:{extend:{colors:{brand:{600:'#4F46E5'}}}}}</script>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
+            <a href="index.html" class="flex items-center space-x-2"><span class="text-2xl">🛠️</span><span class="text-xl font-bold text-brand-600">FreeTools</span></a>
+            <a href="index.html" class="text-gray-600 hover:text-brand-600">← All Tools</a>
+        </div>
+    </header>
+    <main class="max-w-5xl mx-auto px-4 py-12">
+        <h1 class="text-3xl md:text-4xl font-bold mb-2">🧾 Invoice Generator</h1>
+        <p class="text-gray-600 mb-8">Create professional invoices. Download as PDF. Free forever.</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Form -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-2xl shadow-md p-6">
+                    <h2 class="font-semibold text-lg mb-4">Invoice Details</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Invoice Number</label>
+                            <input type="text" id="invoiceNo" value="INV-001" class="w-full border border-gray-300 rounded-lg p-2.5">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                            <input type="date" id="invoiceDate" class="w-full border border-gray-300 rounded-lg p-2.5">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+                            <input type="date" id="dueDate" class="w-full border border-gray-300 rounded-lg p-2.5">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Currency</label>
+                            <select id="currency" class="w-full border border-gray-300 rounded-lg p-2.5">
+                                <option value="$">$ USD</option>
+                                <option value="€">€ EUR</option>
+                                <option value="£">£ GBP</option>
+                                <option value="¥">¥ CNY/JPY</option>
+                                <option value="HK$">HK$ HKD</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-md p-6">
+                    <h2 class="font-semibold text-lg mb-4">From (Your Company)</h2>
+                    <div class="space-y-3">
+                        <input type="text" id="fromName" placeholder="Company / Your Name" class="w-full border border-gray-300 rounded-lg p-2.5">
+                        <textarea id="fromAddress" rows="3" placeholder="Address" class="w-full border border-gray-300 rounded-lg p-2.5 resize-none"></textarea>
+                        <input type="email" id="fromEmail" placeholder="Email" class="w-full border border-gray-300 rounded-lg p-2.5">
+                        <input type="tel" id="fromPhone" placeholder="Phone" class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-md p-6">
+                    <h2 class="font-semibold text-lg mb-4">Bill To</h2>
+                    <div class="space-y-3">
+                        <input type="text" id="toName" placeholder="Client Name / Company" class="w-full border border-gray-300 rounded-lg p-2.5">
+                        <textarea id="toAddress" rows="3" placeholder="Client Address" class="w-full border border-gray-300 rounded-lg p-2.5 resize-none"></textarea>
+                        <input type="email" id="toEmail" placeholder="Client Email" class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-md p-6">
+                    <h2 class="font-semibold text-lg mb-4">Line Items</h2>
+                    <div id="items">
+                        <div class="grid grid-cols-12 gap-2 mb-2 text-sm font-medium text-gray-500">
+                            <div class="col-span-5">Description</div>
+                            <div class="col-span-2">Qty</div>
+                            <div class="col-span-2">Price</div>
+                            <div class="col-span-2">Amount</div>
+                            <div class="col-span-1"></div>
+                        </div>
+                        <div class="item-row grid grid-cols-12 gap-2 mb-2">
+                            <input type="text" placeholder="Service description" class="item-desc col-span-5 border border-gray-300 rounded-lg p-2">
+                            <input type="number" value="1" min="0" class="item-qty col-span-2 border border-gray-300 rounded-lg p-2">
+                            <input type="number" value="0" min="0" step="0.01" class="item-price col-span-2 border border-gray-300 rounded-lg p-2">
+                            <div class="item-amount col-span-2 flex items-center text-gray-700 font-medium p-2">$0.00</div>
+                            <button class="remove-item col-span-1 text-red-400 hover:text-red-600 text-xl" onclick="this.closest('.item-row').remove();calcTotal();">✕</button>
+                        </div>
+                    </div>
+                    <button id="addItemBtn" class="text-brand-600 font-medium mt-2 hover:underline">+ Add Item</button>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-md p-6">
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tax Rate (%)</label>
+                            <input type="number" id="taxRate" value="0" min="0" step="0.1" class="w-full border border-gray-300 rounded-lg p-2.5">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Discount (%)</label>
+                            <input type="number" id="discountRate" value="0" min="0" step="0.1" class="w-full border border-gray-300 rounded-lg p-2.5">
+                        </div>
+                    </div>
+                    <div class="border-t pt-4 space-y-2">
+                        <div class="flex justify-between"><span class="text-gray-600">Subtotal:</span><span id="subtotal" class="font-medium">$0.00</span></div>
+                        <div class="flex justify-between"><span class="text-gray-600">Tax:</span><span id="taxAmount" class="font-medium">$0.00</span></div>
+                        <div class="flex justify-between"><span class="text-gray-600">Discount:</span><span id="discountAmount" class="font-medium">-$0.00</span></div>
+                        <div class="flex justify-between text-lg font-bold border-t pt-2"><span>Total:</span><span id="totalAmount">$0.00</span></div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-md p-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                    <textarea id="notes" rows="3" placeholder="Payment terms, thank you message, etc." class="w-full border border-gray-300 rounded-lg p-2.5 resize-none"></textarea>
+                </div>
+
+                <div class="flex gap-3">
+                    <button id="downloadPdfBtn" class="bg-brand-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition flex-1">📥 Download PDF</button>
+                    <button id="previewBtn" class="bg-white border-2 border-brand-600 text-brand-600 px-8 py-3 rounded-lg font-semibold hover:bg-brand-50 transition flex-1">👁 Preview</button>
+                </div>
+            </div>
+
+            <!-- Preview -->
+            <div>
+                <div id="preview" class="bg-white rounded-2xl shadow-lg p-8 min-h-[600px]">
+                    <div class="text-center text-gray-400 py-20">
+                        <div class="text-6xl mb-4">🧾</div>
+                        <p>Click "Preview" to see your invoice</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="mt-16">
+            <h2 class="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+            <div class="space-y-4">
+                <details class="bg-white rounded-lg p-4 shadow-sm"><summary class="font-semibold cursor-pointer">Is this invoice generator really free?</summary><p class="mt-2 text-gray-600">Yes, 100% free. No hidden charges, no signup, no watermarks on your invoices.</p></details>
+                <details class="bg-white rounded-lg p-4 shadow-sm"><summary class="font-semibold cursor-pointer">Are my invoices private?</summary><p class="mt-2 text-gray-600">Yes. Everything is generated in your browser. No data is sent to any server.</p></details>
+                <details class="bg-white rounded-lg p-4 shadow-sm"><summary class="font-semibold cursor-pointer">Is the generated invoice legally valid?</summary><p class="mt-2 text-gray-600">The PDF contains all standard invoice fields. However, please check your local regulations for specific requirements.</p></details>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-gray-900 text-gray-400 py-8"><div class="max-w-7xl mx-auto px-4 text-center text-sm"><p>&copy; 2026 FreeTools. <a href="index.html" class="text-gray-300 hover:text-white">All Tools</a></p></div></footer>
+
+    <script>
+    (function(){
+        // Set default dates
+        const today = new Date();
+        document.getElementById('invoiceDate').value = today.toISOString().split('T')[0];
+        const due = new Date(today); due.setDate(due.getDate() + 30);
+        document.getElementById('dueDate').value = due.toISOString().split('T')[0];
+
+        function getCurrency() { return document.getElementById('currency').value; }
+
+        function addItem() {
+            const container = document.getElementById('items');
+            const row = document.createElement('div');
+            row.className = 'item-row grid grid-cols-12 gap-2 mb-2';
+            row.innerHTML = `
+                <input type="text" placeholder="Service description" class="item-desc col-span-5 border border-gray-300 rounded-lg p-2">
+                <input type="number" value="1" min="0" class="item-qty col-span-2 border border-gray-300 rounded-lg p-2">
+                <input type="number" value="0" min="0" step="0.01" class="item-price col-span-2 border border-gray-300 rounded-lg p-2">
+                <div class="item-amount col-span-2 flex items-center text-gray-700 font-medium p-2">$0.00</div>
+                <button class="remove-item col-span-1 text-red-400 hover:text-red-600 text-xl">✕</button>
+            `;
+            row.querySelector('.remove-item').onclick = function() { row.remove(); calcTotal(); };
+            container.appendChild(row);
+            row.querySelector('.item-desc').focus();
+        }
+
+        document.getElementById('addItemBtn').onclick = addItem;
+        document.getElementById('items').addEventListener('input', calcTotal);
+        document.getElementById('taxRate').addEventListener('input', calcTotal);
+        document.getElementById('discountRate').addEventListener('input', calcTotal);
+        document.getElementById('currency').addEventListener('change', calcTotal);
+
+        function calcTotal() {
+            const c = getCurrency();
+            let subtotal = 0;
+            document.querySelectorAll('.item-row').forEach(row => {
+                const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+                const price = parseFloat(row.querySelector('.item-price').value) || 0;
+                const amount = qty * price;
+                row.querySelector('.item-amount').textContent = c + amount.toFixed(2);
+                subtotal += amount;
+            });
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const discountRate = parseFloat(document.getElementById('discountRate').value) || 0;
+            const discount = subtotal * discountRate / 100;
+            const tax = (subtotal - discount) * taxRate / 100;
+            const total = subtotal - discount + tax;
+            document.getElementById('subtotal').textContent = c + subtotal.toFixed(2);
+            document.getElementById('taxAmount').textContent = c + tax.toFixed(2);
+            document.getElementById('discountAmount').textContent = '-' + c + discount.toFixed(2);
+            document.getElementById('totalAmount').textContent = c + total.toFixed(2);
+        }
+
+        document.getElementById('previewBtn').onclick = function() {
+            const c = getCurrency();
+            const items = [];
+            document.querySelectorAll('.item-row').forEach(row => {
+                const desc = row.querySelector('.item-desc').value || 'Service';
+                const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+                const price = parseFloat(row.querySelector('.item-price').value) || 0;
+                items.push({ desc, qty, price, amount: qty * price });
+            });
+            const subtotal = items.reduce((s, i) => s + i.amount, 0);
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const discountRate = parseFloat(document.getElementById('discountRate').value) || 0;
+            const discount = subtotal * discountRate / 100;
+            const tax = (subtotal - discount) * taxRate / 100;
+            const total = subtotal - discount + tax;
+
+            const preview = document.getElementById('preview');
+            preview.innerHTML = `
+                <div class="border-b pb-6 mb-6 flex justify-between">
+                    <div><h2 class="text-2xl font-bold text-brand-600">INVOICE</h2><p class="text-gray-500">#${document.getElementById('invoiceNo').value}</p></div>
+                    <div class="text-right text-sm text-gray-600">
+                        <p>Date: ${document.getElementById('invoiceDate').value}</p>
+                        <p>Due: ${document.getElementById('dueDate').value}</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-8 mb-8">
+                    <div><h3 class="text-sm font-semibold text-gray-500 mb-1">FROM</h3><p class="font-semibold">${document.getElementById('fromName').value || '—'}</p><p class="text-sm text-gray-600 whitespace-pre-line">${document.getElementById('fromAddress').value || ''}</p><p class="text-sm text-gray-600">${document.getElementById('fromEmail').value || ''}</p><p class="text-sm text-gray-600">${document.getElementById('fromPhone').value || ''}</p></div>
+                    <div><h3 class="text-sm font-semibold text-gray-500 mb-1">BILL TO</h3><p class="font-semibold">${document.getElementById('toName').value || '—'}</p><p class="text-sm text-gray-600 whitespace-pre-line">${document.getElementById('toAddress').value || ''}</p><p class="text-sm text-gray-600">${document.getElementById('toEmail').value || ''}</p></div>
+                </div>
+                <table class="w-full mb-8">
+                    <thead><tr class="border-b text-left text-sm text-gray-500"><th class="pb-2">Description</th><th class="pb-2 text-right">Qty</th><th class="pb-2 text-right">Price</th><th class="pb-2 text-right">Amount</th></tr></thead>
+                    <tbody>${items.map(i => `<tr class="border-b"><td class="py-3">${i.desc}</td><td class="py-3 text-right">${i.qty}</td><td class="py-3 text-right">${c}${i.price.toFixed(2)}</td><td class="py-3 text-right font-medium">${c}${i.amount.toFixed(2)}</td></tr>`).join('')}</tbody>
+                </table>
+                <div class="flex justify-end">
+                    <div class="w-64 space-y-1 text-sm">
+                        <div class="flex justify-between"><span class="text-gray-500">Subtotal:</span><span>${c}${subtotal.toFixed(2)}</span></div>
+                        ${discount > 0 ? `<div class="flex justify-between text-green-600"><span>Discount (${discountRate}%):</span><span>-${c}${discount.toFixed(2)}</span></div>` : ''}
+                        ${tax > 0 ? `<div class="flex justify-between"><span class="text-gray-500">Tax (${taxRate}%):</span><span>${c}${tax.toFixed(2)}</span></div>` : ''}
+                        <div class="flex justify-between text-lg font-bold border-t pt-2 mt-2"><span>Total:</span><span>${c}${total.toFixed(2)}</span></div>
+                    </div>
+                </div>
+                ${document.getElementById('notes').value ? `<div class="mt-8 pt-6 border-t"><h3 class="text-sm font-semibold text-gray-500 mb-1">NOTES</h3><p class="text-sm text-gray-600">${document.getElementById('notes').value}</p></div>` : ''}
+            `;
+        };
+
+        document.getElementById('downloadPdfBtn').onclick = function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const c = getCurrency();
+            const pageW = doc.internal.pageSize.getWidth();
+
+            // Header
+            doc.setFontSize(28);
+            doc.setTextColor(79, 70, 229);
+            doc.text('INVOICE', 20, 30);
+            doc.setFontSize(10);
+            doc.setTextColor(100);
+            doc.text('#' + document.getElementById('invoiceNo').value, 20, 38);
+            doc.text('Date: ' + document.getElementById('invoiceDate').value, pageW - 20, 25, { align: 'right' });
+            doc.text('Due: ' + document.getElementById('dueDate').value, pageW - 20, 32, { align: 'right' });
+
+            // From/To
+            doc.setDrawColor(200);
+            doc.line(20, 45, pageW - 20, 45);
+            doc.setFontSize(8);
+            doc.setTextColor(150);
+            doc.text('FROM', 20, 55);
+            doc.text('BILL TO', pageW / 2, 55);
+            doc.setFontSize(10);
+            doc.setTextColor(50);
+            doc.text(document.getElementById('fromName').value || '', 20, 63);
+            doc.text(document.getElementById('fromAddress').value || '', 20, 70);
+            doc.text((document.getElementById('fromEmail').value || '') + '  ' + (document.getElementById('fromPhone').value || ''), 20, 77);
+            doc.text(document.getElementById('toName').value || '', pageW / 2, 63);
+            doc.text(document.getElementById('toAddress').value || '', pageW / 2, 70);
+            doc.text(document.getElementById('toEmail').value || '', pageW / 2, 77);
+
+            // Items table
+            let y = 90;
+            doc.setFillColor(245, 245, 245);
+            doc.rect(20, y - 5, pageW - 40, 8, 'F');
+            doc.setFontSize(8);
+            doc.setTextColor(100);
+            doc.text('Description', 25, y);
+            doc.text('Qty', 110, y, { align: 'right' });
+            doc.text('Price', 135, y, { align: 'right' });
+            doc.text('Amount', pageW - 25, y, { align: 'right' });
+            y += 10;
+
+            doc.setTextColor(50);
+            doc.setFontSize(9);
+            let subtotal = 0;
+            document.querySelectorAll('.item-row').forEach(row => {
+                const desc = row.querySelector('.item-desc').value || 'Service';
+                const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+                const price = parseFloat(row.querySelector('.item-price').value) || 0;
+                const amount = qty * price;
+                subtotal += amount;
+                doc.text(desc, 25, y);
+                doc.text(String(qty), 110, y, { align: 'right' });
+                doc.text(c + price.toFixed(2), 135, y, { align: 'right' });
+                doc.text(c + amount.toFixed(2), pageW - 25, y, { align: 'right' });
+                y += 8;
+            });
+
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const discountRate = parseFloat(document.getElementById('discountRate').value) || 0;
+            const discount = subtotal * discountRate / 100;
+            const tax = (subtotal - discount) * taxRate / 100;
+            const total = subtotal - discount + tax;
+
+            y += 5;
+            doc.line(20, y, pageW - 20, y);
+            y += 8;
+            doc.setFontSize(9);
+            doc.setTextColor(100);
+            doc.text('Subtotal:', pageW - 70, y); doc.setTextColor(50); doc.text(c + subtotal.toFixed(2), pageW - 25, y, { align: 'right' });
+            if (discount > 0) { y += 7; doc.setTextColor(100); doc.text('Discount:', pageW - 70, y); doc.setTextColor(34,139,34); doc.text('-' + c + discount.toFixed(2), pageW - 25, y, { align: 'right' }); }
+            if (tax > 0) { y += 7; doc.setTextColor(100); doc.text('Tax:', pageW - 70, y); doc.setTextColor(50); doc.text(c + tax.toFixed(2), pageW - 25, y, { align: 'right' }); }
+            y += 7;
+            doc.setDrawColor(79, 70, 229);
+            doc.setLineWidth(0.5);
+            doc.line(pageW - 75, y - 2, pageW - 20, y - 2);
+            doc.setFontSize(12);
+            doc.setTextColor(79, 70, 229);
+            doc.text('Total:', pageW - 70, y + 5);
+            doc.text(c + total.toFixed(2), pageW - 25, y + 5, { align: 'right' });
+
+            // Notes
+            if (document.getElementById('notes').value) {
+                y += 20;
+                doc.setFontSize(8);
+                doc.setTextColor(150);
+                doc.text('NOTES', 20, y);
+                y += 6;
+                doc.setFontSize(9);
+                doc.setTextColor(80);
+                const noteLines = doc.splitTextToSize(document.getElementById('notes').value, pageW - 40);
+                doc.text(noteLines, 20, y);
+            }
+
+            doc.save('invoice-' + document.getElementById('invoiceNo').value + '.pdf');
+        };
+
+        calcTotal();
+    })();
+    </script>
+</body>
+</html>

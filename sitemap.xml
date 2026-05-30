@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://tyr1105.github.io/freetools/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://tyr1105.github.io/freetools/text-to-speech.html</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://tyr1105.github.io/freetools/invoice-generator.html</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://tyr1105.github.io/freetools/qr-generator.html</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://tyr1105.github.io/freetools/json-formatter.html</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://tyr1105.github.io/freetools/password-generator.html</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+</urlset>

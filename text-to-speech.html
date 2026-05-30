@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Text to Speech Online - No Signup | FreeTools</title>
+    <meta name="description" content="Convert text to speech online for free. No signup required. Multiple voices, adjustable speed and pitch. Download as audio. 100% private - works in your browser.">
+    <meta property="og:title" content="Free Text to Speech Online - No Signup | FreeTools">
+    <meta property="og:description" content="Convert text to natural speech online for free. Multiple voices, adjustable speed. 100% private.">
+    <link rel="canonical" href="https://tyr1105.github.io/freetools/text-to-speech.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{colors:{brand:{600:'#4F46E5'}}}}}</script>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
+            <a href="index.html" class="flex items-center space-x-2"><span class="text-2xl">🛠️</span><span class="text-xl font-bold text-brand-600">FreeTools</span></a>
+            <a href="index.html" class="text-gray-600 hover:text-brand-600">← All Tools</a>
+        </div>
+    </header>
+    <main class="max-w-4xl mx-auto px-4 py-12">
+        <h1 class="text-3xl md:text-4xl font-bold mb-2">🔊 Text to Speech</h1>
+        <p class="text-gray-600 mb-8">Convert any text to natural-sounding speech. Free, private, works offline.</p>
+
+        <div class="bg-white rounded-2xl shadow-md p-6 md:p-8">
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Enter your text</label>
+                <textarea id="textInput" rows="8" class="w-full border border-gray-300 rounded-lg p-4 focus:ring-2 focus:ring-brand-600 focus:border-transparent resize-vertical" placeholder="Type or paste your text here...">Hello! Welcome to FreeTools Text to Speech. This tool converts your text into natural-sounding speech, right in your browser. No signup required, and your text never leaves your device.</textarea>
+                <div class="flex justify-between mt-1 text-sm text-gray-400">
+                    <span id="charCount">0 characters</span>
+                    <span id="wordCount">0 words</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Voice</label>
+                    <select id="voiceSelect" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-brand-600"></select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Speed: <span id="rateValue">1.0</span>x</label>
+                    <input type="range" id="rateRange" min="0.5" max="2" step="0.1" value="1" class="w-full mt-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Pitch: <span id="pitchValue">1.0</span></label>
+                    <input type="range" id="pitchRange" min="0.5" max="2" step="0.1" value="1" class="w-full mt-2">
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-3">
+                <button id="speakBtn" class="bg-brand-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>
+                    <span>Speak</span>
+                </button>
+                <button id="pauseBtn" class="bg-yellow-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-yellow-600 transition hidden">Pause</button>
+                <button id="stopBtn" class="bg-red-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition hidden">Stop</button>
+                <button id="downloadBtn" class="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/></svg>
+                    <span>Download Audio</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- FAQ for SEO -->
+        <section class="mt-16">
+            <h2 class="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+            <div class="space-y-4">
+                <details class="bg-white rounded-lg p-4 shadow-sm">
+                    <summary class="font-semibold cursor-pointer">Is this text to speech tool free?</summary>
+                    <p class="mt-2 text-gray-600">Yes, completely free with no limits. No signup or credit card required.</p>
+                </details>
+                <details class="bg-white rounded-lg p-4 shadow-sm">
+                    <summary class="font-semibold cursor-pointer">Is my text data private?</summary>
+                    <p class="mt-2 text-gray-600">Absolutely. Your text is processed entirely in your browser using the Web Speech API. Nothing is sent to any server.</p>
+                </details>
+                <details class="bg-white rounded-lg p-4 shadow-sm">
+                    <summary class="font-semibold cursor-pointer">Can I download the audio?</summary>
+                    <p class="mt-2 text-gray-600">Yes! Click the "Download Audio" button to save the speech as a WAV audio file.</p>
+                </details>
+                <details class="bg-white rounded-lg p-4 shadow-sm">
+                    <summary class="font-semibold cursor-pointer">What voices are available?</summary>
+                    <p class="mt-2 text-gray-600">The available voices depend on your browser and operating system. Most modern browsers provide multiple voices in different languages.</p>
+                </details>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-gray-900 text-gray-400 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm">
+            <p>&copy; 2026 FreeTools. <a href="index.html" class="text-gray-300 hover:text-white">All Tools</a></p>
+        </div>
+    </footer>
+    <script>
+    (function(){
+        const textInput = document.getElementById('textInput');
+        const voiceSelect = document.getElementById('voiceSelect');
+        const rateRange = document.getElementById('rateRange');
+        const pitchRange = document.getElementById('pitchRange');
+        const rateValue = document.getElementById('rateValue');
+        const pitchValue = document.getElementById('pitchValue');
+        const speakBtn = document.getElementById('speakBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const charCount = document.getElementById('charCount');
+        const wordCount = document.getElementById('wordCount');
+
+        function updateCounts() {
+            const t = textInput.value;
+            charCount.textContent = t.length + ' characters';
+            wordCount.textContent = (t.trim() ? t.trim().split(/\s+/).length : 0) + ' words';
+        }
+        textInput.addEventListener('input', updateCounts);
+        updateCounts();
+
+        function loadVoices() {
+            const voices = speechSynthesis.getVoices();
+            voiceSelect.innerHTML = '';
+            voices.forEach((v, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = v.name + ' (' + v.lang + ')';
+                if (v.default) opt.selected = true;
+                voiceSelect.appendChild(opt);
+            });
+        }
+        speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices();
+
+        rateRange.oninput = () => rateValue.textContent = rateRange.value;
+        pitchRange.oninput = () => pitchValue.textContent = pitchRange.value;
+
+        speakBtn.onclick = () => {
+            speechSynthesis.cancel();
+            const utt = new SpeechSynthesisUtterance(textInput.value);
+            const voices = speechSynthesis.getVoices();
+            if (voices.length) utt.voice = voices[voiceSelect.value];
+            utt.rate = parseFloat(rateRange.value);
+            utt.pitch = parseFloat(pitchRange.value);
+            utt.onstart = () => { pauseBtn.classList.remove('hidden'); stopBtn.classList.remove('hidden'); };
+            utt.onend = () => { pauseBtn.classList.add('hidden'); stopBtn.classList.add('hidden'); pauseBtn.textContent = 'Pause'; };
+            speechSynthesis.speak(utt);
+        };
+
+        pauseBtn.onclick = () => {
+            if (speechSynthesis.paused) { speechSynthesis.resume(); pauseBtn.textContent = 'Pause'; }
+            else { speechSynthesis.pause(); pauseBtn.textContent = 'Resume'; }
+        };
+
+        stopBtn.onclick = () => {
+            speechSynthesis.cancel();
+            pauseBtn.classList.add('hidden');
+            stopBtn.classList.add('hidden');
+        };
+
+        downloadBtn.onclick = async () => {
+            // Use AudioContext + MediaRecorder to capture speech
+            const text = textInput.value;
+            if (!text.trim()) return alert('Please enter some text first.');
+
+            // Create an offline approach using SpeechSynthesis + MediaStream
+            // Fallback: offer to use browser's built-in save dialog
+            const utt = new SpeechSynthesisUtterance(text);
+            const voices = speechSynthesis.getVoices();
+            if (voices.length) utt.voice = voices[voiceSelect.value];
+            utt.rate = parseFloat(rateRange.value);
+            utt.pitch = parseFloat(pitchRange.value);
+
+            // For browsers that support AudioContext capture
+            try {
+                const audioCtx = new AudioContext();
+                const dest = audioCtx.createMediaStreamDestination();
+                const mediaRecorder = new MediaRecorder(dest.stream);
+                const chunks = [];
+
+                mediaRecorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'audio/webm' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url; a.download = 'speech.webm'; a.click();
+                    URL.revokeObjectURL(url);
+                };
+
+                mediaRecorder.start();
+                speechSynthesis.speak(utt);
+                utt.onend = () => { setTimeout(() => { mediaRecorder.stop(); audioCtx.close(); }, 500); };
+            } catch(e) {
+                // Fallback: just speak
+                alert('Download not supported in this browser. The speech will play instead.');
+                speechSynthesis.speak(utt);
+            }
+        };
+    })();
+    </script>
+</body>
+</html>

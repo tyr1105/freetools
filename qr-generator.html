@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free QR Code Generator - Create QR Codes Online | FreeTools</title>
+    <meta name="description" content="Generate QR codes for free online. Create QR codes for URLs, text, WiFi, contacts. Customize colors and size. Download as PNG. No signup.">
+    <meta property="og:title" content="Free QR Code Generator - Create QR Codes Online">
+    <meta property="og:description" content="Generate custom QR codes for free. Download as PNG. No signup.">
+    <link rel="canonical" href="https://tyr1105.github.io/freetools/qr-generator.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script>tailwind.config={theme:{extend:{colors:{brand:{600:'#4F46E5'}}}}}</script>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
+            <a href="index.html" class="flex items-center space-x-2"><span class="text-2xl">🛠️</span><span class="text-xl font-bold text-brand-600">FreeTools</span></a>
+            <a href="index.html" class="text-gray-600 hover:text-brand-600">← All Tools</a>
+        </div>
+    </header>
+    <main class="max-w-4xl mx-auto px-4 py-12">
+        <h1 class="text-3xl md:text-4xl font-bold mb-2">📱 QR Code Generator</h1>
+        <p class="text-gray-600 mb-8">Generate custom QR codes. Download as PNG. Free forever.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-6">
+                <div class="bg-white rounded-2xl shadow-md p-6">
+                    <h2 class="font-semibold text-lg mb-4">Content Type</h2>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button class="type-btn bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium" data-type="url">URL</button>
+                        <button class="type-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200" data-type="text">Text</button>
+                        <button class="type-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200" data-type="wifi">WiFi</button>
+                        <button class="type-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200" data-type="email">Email</button>
+                    </div>
+
+                    <div id="input-url" class="input-section">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">URL</label>
+                        <input type="url" id="urlInput" value="https://" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-brand-600 focus:border-transparent" placeholder="https://example.com">
+                    </div>
+                    <div id="input-text" class="input-section hidden">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Text</label>
+                        <textarea id="textInput" rows="4" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-brand-600 focus:border-transparent resize-none" placeholder="Enter your text"></textarea>
+                    </div>
+                    <div id="input-wifi" class="input-section hidden space-y-3">
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Network Name (SSID)</label><input type="text" id="wifiSsid" class="w-full border border-gray-300 rounded-lg p-2.5"></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Password</label><input type="text" id="wifiPass" class="w-full border border-gray-300 rounded-lg p-2.5"></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Encryption</label>
+                            <select id="wifiEnc" class="w-full border border-gray-300 rounded-lg p-2.5"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">None</option></select>
+                        </div>
+                    </div>
+                    <div id="input-email" class="input-section hidden space-y-3">
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label><input type="email" id="emailAddr" class="w-full border border-gray-300 rounded-lg p-2.5"></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Subject</label><input type="text" id="emailSubject" class="w-full border border-gray-300 rounded-lg p-2.5"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-md p-6">
+                    <h2 class="font-semibold text-lg mb-4">Customize</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Size</label>
+                            <select id="qrSize" class="w-full border border-gray-300 rounded-lg p-2.5">
+                                <option value="200">Small (200px)</option>
+                                <option value="300" selected>Medium (300px)</option>
+                                <option value="400">Large (400px)</option>
+                                <option value="600">XL (600px)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Error Correction</label>
+                            <select id="qrEc" class="w-full border border-gray-300 rounded-lg p-2.5">
+                                <option value="L">Low (7%)</option>
+                                <option value="M" selected>Medium (15%)</option>
+                                <option value="Q">Quartile (25%)</option>
+                                <option value="H">High (30%)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Foreground</label>
+                            <input type="color" id="qrFg" value="#000000" class="w-full h-10 border border-gray-300 rounded-lg cursor-pointer">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Background</label>
+                            <input type="color" id="qrBg" value="#ffffff" class="w-full h-10 border border-gray-300 rounded-lg cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+
+                <button id="generateBtn" class="w-full bg-brand-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition text-lg">Generate QR Code</button>
+            </div>
+
+            <div class="flex flex-col items-center">
+                <div class="bg-white rounded-2xl shadow-md p-8 w-full flex flex-col items-center">
+                    <canvas id="qrCanvas" class="mb-6"></canvas>
+                    <button id="downloadBtn" class="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition w-full">📥 Download PNG</button>
+                </div>
+            </div>
+        </div>
+
+        <section class="mt-16">
+            <h2 class="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+            <div class="space-y-4">
+                <details class="bg-white rounded-lg p-4 shadow-sm"><summary class="font-semibold cursor-pointer">Is this QR code generator free?</summary><p class="mt-2 text-gray-600">Yes, completely free. No limits, no signup, no watermarks.</p></details>
+                <details class="bg-white rounded-lg p-4 shadow-sm"><summary class="font-semibold cursor-pointer">Do the QR codes expire?</summary><p class="mt-2 text-gray-600">No. The QR codes are static and will work forever. They don't depend on any server.</p></details>
+                <details class="bg-white rounded-lg p-4 shadow-sm"><summary class="font-semibold cursor-pointer">Can I customize the colors?</summary><p class="mt-2 text-gray-600">Yes! Choose any foreground and background colors. Note: very light colors may affect scannability.</p></details>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-gray-900 text-gray-400 py-8"><div class="max-w-7xl mx-auto px-4 text-center text-sm"><p>&copy; 2026 FreeTools. <a href="index.html" class="text-gray-300 hover:text-white">All Tools</a></p></div></footer>
+
+    <script>
+    (function(){
+        let currentType = 'url';
+
+        document.querySelectorAll('.type-btn').forEach(btn => {
+            btn.onclick = function() {
+                document.querySelectorAll('.type-btn').forEach(b => { b.className = 'type-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200'; });
+                this.className = 'type-btn bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium';
+                currentType = this.dataset.type;
+                document.querySelectorAll('.input-section').forEach(s => s.classList.add('hidden'));
+                document.getElementById('input-' + currentType).classList.remove('hidden');
+            };
+        });
+
+        function getContent() {
+            switch(currentType) {
+                case 'url': return document.getElementById('urlInput').value;
+                case 'text': return document.getElementById('textInput').value;
+                case 'wifi': return 'WIFI:T:' + document.getElementById('wifiEnc').value + ';S:' + document.getElementById('wifiSsid').value + ';P:' + document.getElementById('wifiPass').value + ';;';
+                case 'email': return 'mailto:' + document.getElementById('emailAddr').value + '?subject=' + encodeURIComponent(document.getElementById('emailSubject').value);
+            }
+        }
+
+        function generateQR() {
+            const content = getContent();
+            if (!content || content === 'https://') return alert('Please enter content for the QR code.');
+            const canvas = document.getElementById('qrCanvas');
+            const size = parseInt(document.getElementById('qrSize').value);
+            canvas.width = size; canvas.height = size;
+            QRCode.toCanvas(canvas, content, {
+                width: size,
+                margin: 2,
+                color: { dark: document.getElementById('qrFg').value, light: document.getElementById('qrBg').value },
+                errorCorrectionLevel: document.getElementById('qrEc').value
+            }, function(error) { if (error) alert('Error: ' + error); });
+        }
+
+        document.getElementById('generateBtn').onclick = generateQR;
+        document.getElementById('downloadBtn').onclick = function() {
+            const canvas = document.getElementById('qrCanvas');
+            if (!canvas.width) return alert('Generate a QR code first.');
+            const link = document.createElement('a');
+            link.download = 'qrcode.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        };
+
+        // Generate default QR
+        generateQR();
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free JSON Formatter & Validator Online | FreeTools</title>
+    <meta name="description" content="Format, validate, and minify JSON online for free. Syntax highlighting, tree view, and error detection. No signup required. Works in your browser.">
+    <meta property="og:title" content="Free JSON Formatter & Validator Online">
+    <meta property="og:description" content="Format, validate, and minify JSON online for free. No signup.">
+    <link rel="canonical" href="https://tyr1105.github.io/freetools/json-formatter.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{colors:{brand:{600:'#4F46E5'}}}}}</script>
+    <style>
+        .json-key { color: #e11d48; }
+        .json-string { color: #16a34a; }
+        .json-number { color: #2563eb; }
+        .json-boolean { color: #9333ea; }
+        .json-null { color: #6b7280; }
+        #output { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
+            <a href="index.html" class="flex items-center space-x-2"><span class="text-2xl">🛠️</span><span class="text-xl font-bold text-brand-600">FreeTools</span></a>
+            <a href="index.html" class="text-gray-600 hover:text-brand-600">← All Tools</a>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <h1 class="text-3xl md:text-4xl font-bold mb-2">📝 JSON Formatter</h1>
+        <p class="text-gray-600 mb-8">Format, validate, and minify JSON. Free, private, works offline.</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-sm font-medium text-gray-700">Input JSON</label>
+                    <button id="sampleBtn" class="text-sm text-brand-600 hover:underline">Load Sample</button>
+                </div>
+                <textarea id="input" rows="20" class="w-full border border-gray-300 rounded-lg p-4 focus:ring-2 focus:ring-brand-600 focus:border-transparent resize-vertical font-mono text-sm" placeholder='Paste your JSON here...'></textarea>
+                <div id="errorMsg" class="mt-2 text-sm text-red-600 hidden"></div>
+            </div>
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-sm font-medium text-gray-700">Output</label>
+                    <button id="copyBtn" class="text-sm text-brand-600 hover:underline hidden">📋 Copy</button>
+                </div>
+                <div id="output" class="w-full bg-gray-900 text-gray-100 rounded-lg p-4 min-h-[480px] overflow-auto text-sm whitespace-pre-wrap"></div>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3 mt-4">
+            <button id="formatBtn" class="bg-brand-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-indigo-700 transition">✨ Format (Pretty Print)</button>
+            <button id="minifyBtn" class="bg-gray-700 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-800 transition">📦 Minify</button>
+            <button id="validateBtn" class="bg-green-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-green-700 transition">✅ Validate</button>
+        </div>
+
+        <section class="mt-16">
+            <h2 class="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+            <div class="space-y-4">
+                <details class="bg-white rounded-lg p-4 shadow-sm"><summary class="font-semibold cursor-pointer">Is my JSON data private?</summary><p class="mt-2 text-gray-600">Yes. All processing happens in your browser. Your JSON is never sent to any server.</p></details>
+                <details class="bg-white rounded-lg p-4 shadow-sm"><summary class="font-semibold cursor-pointer">What JSON formats are supported?</summary><p class="mt-2 text-gray-600">Standard JSON format (RFC 8259). Objects, arrays, strings, numbers, booleans, and null values.</p></details>
+                <details class="bg-white rounded-lg p-4 shadow-sm"><summary class="font-semibold cursor-pointer">Is there a size limit?</summary><p class="mt-2 text-gray-600">No hard limit, but very large JSON files (>10MB) may slow down your browser.</p></details>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-gray-900 text-gray-400 py-8"><div class="max-w-7xl mx-auto px-4 text-center text-sm"><p>&copy; 2026 FreeTools. <a href="index.html" class="text-gray-300 hover:text-white">All Tools</a></p></div></footer>
+
+    <script>
+    (function(){
+        const input = document.getElementById('input');
+        const output = document.getElementById('output');
+        const errorMsg = document.getElementById('errorMsg');
+        const copyBtn = document.getElementById('copyBtn');
+        let lastResult = '';
+
+        function showError(msg) { errorMsg.textContent = msg; errorMsg.classList.remove('hidden'); }
+        function hideError() { errorMsg.classList.add('hidden'); }
+
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+                let cls = 'json-number';
+                if (/^"/.test(match)) { cls = /:$/.test(match) ? 'json-key' : 'json-string'; }
+                else if (/true|false/.test(match)) cls = 'json-boolean';
+                else if (/null/.test(match)) cls = 'json-null';
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        document.getElementById('formatBtn').onclick = function() {
+            hideError();
+            try {
+                const obj = JSON.parse(input.value);
+                lastResult = JSON.stringify(obj, null, 2);
+                output.innerHTML = syntaxHighlight(lastResult);
+                copyBtn.classList.remove('hidden');
+            } catch(e) { showError('Invalid JSON: ' + e.message); output.textContent = ''; }
+        };
+
+        document.getElementById('minifyBtn').onclick = function() {
+            hideError();
+            try {
+                const obj = JSON.parse(input.value);
+                lastResult = JSON.stringify(obj);
+                output.innerHTML = syntaxHighlight(lastResult);
+                copyBtn.classList.remove('hidden');
+            } catch(e) { showError('Invalid JSON: ' + e.message); output.textContent = ''; }
+        };
+
+        document.getElementById('validateBtn').onclick = function() {
+            hideError();
+            try {
+                JSON.parse(input.value);
+                output.innerHTML = '<span class="text-green-400 font-bold">✅ Valid JSON!</span>';
+                copyBtn.classList.add('hidden');
+            } catch(e) { showError('Invalid JSON: ' + e.message); output.innerHTML = '<span class="text-red-400 font-bold">❌ Invalid JSON</span>'; }
+        };
+
+        copyBtn.onclick = function() {
+            navigator.clipboard.writeText(lastResult).then(() => { copyBtn.textContent = '✅ Copied!'; setTimeout(() => copyBtn.textContent = '📋 Copy', 2000); });
+        };
+
+        document.getElementById('sampleBtn').onclick = function() {
+            input.value = JSON.stringify({"name":"FreeTools","version":"1.0","tools":[{"id":"tts","name":"Text to Speech","category":"audio","free":true},{"id":"invoice","name":"Invoice Generator","category":"business","free":true},{"id":"qr","name":"QR Code Generator","category":"utility","free":true}],"features":["privacy-first","no-signup","works-offline"],"stats":{"users":10000,"tools":5,"rating":4.9}}, null, 2);
+        };
+    })();
+    </script>
+</body>
+</html>
